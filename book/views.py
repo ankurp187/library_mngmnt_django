@@ -24,8 +24,38 @@ class BookDetailView(generic.ListView):
         return Book.objects.order_by("-publish_date")
 
 
+class allAssignmentsView(generic.ListView):
+    template_name = 'book/all_assignments.html'
+    context_object_name = 'assignments'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Assignment.objects.order_by("-assigned_on")
+
+
+class currAssignmentsView(generic.ListView):
+    template_name = 'book/current_assignments.html'
+    context_object_name = 'assignments'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Assignment.objects.filter(is_active='Y').order_by("-assigned_on")
+
+
+class studAssignmentsView(generic.ListView):
+    template_name = 'book/student_assignments.html'
+    context_object_name = 'assignments'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Assignment.objects.filter(roll_id=self.kwargs['stud_id']).order_by("-assigned_on")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['stud_id'] = self.kwargs['stud_id']
+        return context
+
+
 def assignBook(request):
     return render(request,"book/book_assign.html")
+
 
 def assignBookDef(request):
     roll = request.POST.get('roll_id')
@@ -41,6 +71,7 @@ def assignBookDef(request):
 
 def unassignBook(request):
     return render(request,"book/book_unassign.html")
+
 
 def unassignBookDef(request):
     roll = request.POST.get('roll_id')
@@ -59,4 +90,5 @@ def unassignBookDef(request):
         book.save()
 
     return HttpResponseRedirect(reverse("book:unassign_book"))
+
 
