@@ -1,0 +1,12 @@
+<form action="{% url 'book:assign_book_def' %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <label for="roll_id">Roll Id</label>
+            <input type="text" name="roll_id" id="roll_id" value="">
+            <label for="book_id">Book Id</label>
+            <input type="text" name="book_id" id="book_id" value="">
+    </fieldset>
+    <input type="submit" value="Assign">
+</form>

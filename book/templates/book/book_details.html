@@ -1,0 +1,36 @@
+
+
+{% if books %}
+    <table border="1px solid black" width="800px" align="center">
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Publish_date</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+    {% for book in books %}
+        <tr>
+            <td>{{book.name}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.publish_date}}</td>
+            <td>{{book.price}}</td>
+            <td>{{book.quantity}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <table border="1px solid black" align="center">
+        <tr>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Publish_date</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        <tr>
+            <td colspan="5">No books are available.</td>
+        </tr>
+    </table>
+{% endif %}
+
