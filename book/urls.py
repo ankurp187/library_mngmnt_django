@@ -9,9 +9,8 @@ urlpatterns = [
     path("book_details/", views.BookDetailView.as_view(), name="book_details"),
     path("assign_book/", views.assignBook, name="assign_book"),
     path("assign_book_def/", views.assignBookDef, name="assign_book_def"),
-    # path("<int:pk>/", views.DetailView.as_view(), name="detail"),
-    # path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
-    # path("<int:question_id>/vote/", views.vote, name="vote"),
+    path("unassign_book/", views.unassignBook, name="unassign_book"),
+    path("unassign_book_def/", views.unassignBookDef, name="unassign_book_def"),
 ]
 
 
