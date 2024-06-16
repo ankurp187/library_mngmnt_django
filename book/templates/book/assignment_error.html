@@ -1,0 +1,38 @@
+
+<h3 align="center"> Hi {{ stud_id }}, We can't assign you more books until you return the previous ones. It is against our policy.</h3>
+
+<p align="center">Please choose one of the books that you want to return.</p>
+
+{% if assignments %}
+    <table border="1px solid black" width="800px" align="center">
+        <tr>
+            <th>Roll Id</th>
+            <th>Book Id</th>
+            <th>Assigned On</th>
+            <th>Submitted On</th>
+            <th>Still Assigned</th>
+        </tr>
+    {% for assignment in assignments %}
+        <tr>
+            <td>{{assignment.roll_id}}</td>
+            <td>{{assignment.book_id}}</td>
+            <td>{{assignment.assigned_on}}</td>
+            <td>{{assignment.submitted_on}}</td>
+            <td>{{assignment.is_active}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <table border="1px solid black" align="center">
+        <tr>
+            <th>Roll Id</th>
+            <th>Book Id</th>
+            <th>Assigned On</th>
+            <th>Submitted On</th>
+            <th>Still Assigned</th>
+        </tr>
+        <tr>
+            <td colspan="5">No assignments are available.</td>
+        </tr>
+    </table>
+{% endif %}

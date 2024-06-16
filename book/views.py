@@ -53,6 +53,19 @@ class studAssignmentsView(generic.ListView):
         return context
 
 
+class assignmentErrorView(generic.ListView):
+    template_name = 'book/assignment_error.html'
+    context_object_name = 'assignments'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Assignment.objects.filter(roll_id=self.kwargs['stud_id'],is_active='Y').order_by("-assigned_on")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['stud_id'] = self.kwargs['stud_id']
+        return context
+
+
 def assignBook(request):
     return render(request,"book/book_assign.html")
 
@@ -61,6 +74,11 @@ def assignBookDef(request):
     roll = request.POST.get('roll_id')
     book_i = request.POST.get('book_id')
     book = get_object_or_404(Book,pk=book_i)
+
+    assigned_books = len(Assignment.objects.filter(roll_id=roll,is_active='Y'))
+    
+    if assigned_books==4:
+        return HttpResponseRedirect(reverse("book:assignment_error", args=(roll,)))
     
     Assignment(roll_id = roll ,book_id = book).save()
     book.quantity = book.quantity-1
