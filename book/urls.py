@@ -7,8 +7,10 @@ app_name = "book"
 
 urlpatterns = [
     path("book_details/", views.BookDetailView.as_view(), name="book_details"),
-    path("assign_book/", views.assignBook, name="assign_book"),
+    # path("assign_book/", views.assignBook, name="assign_book"),
+    path("assign_book/", views.assignBook.as_view(), name="assign_book"),
     path("assign_book_def/", views.assignBookDef, name="assign_book_def"),
+    path("check_assignment/", views.check_Assignments, name="check_assign"),
     path("unassign_book/", views.unassignBook, name="unassign_book"),
     path("unassign_book_def/", views.unassignBookDef, name="unassign_book_def"),
     path("allAssignments/",views.allAssignmentsView.as_view(),name="all_assign"),

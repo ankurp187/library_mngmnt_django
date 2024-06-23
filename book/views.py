@@ -21,7 +21,7 @@ class BookDetailView(generic.ListView):
     context_object_name = 'books'
 
     def get_queryset(self) -> QuerySet[Any]:
-        return Book.objects.order_by("-publish_date")
+        return Book.objects.order_by("-id")
 
 
 class allAssignmentsView(generic.ListView):
@@ -66,8 +66,15 @@ class assignmentErrorView(generic.ListView):
         return context
 
 
-def assignBook(request):
-    return render(request,"book/book_assign.html")
+# def assignBook(request):
+#     return render(request,"book/book_assign.html")
+
+class assignBook(generic.ListView):
+    template_name = 'book/book_assign.html'
+    context_object_name = 'books'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Book.objects.filter(quantity__gt=0)#.order_by("-id")
 
 
 def assignBookDef(request):
@@ -80,11 +87,33 @@ def assignBookDef(request):
     if assigned_books==4:
         return HttpResponseRedirect(reverse("book:assignment_error", args=(roll,)))
     
+    is_book_assigned = len(Assignment.objects.filter(roll_id=roll,book_id=book_i,is_active='Y'))
+    if is_book_assigned:
+        return HttpResponseRedirect(reverse("book:assignment_error", args=(roll,)))
+    
     Assignment(roll_id = roll ,book_id = book).save()
     book.quantity = book.quantity-1
     book.save()
 
     return HttpResponseRedirect(reverse("book:assign_book"))
+
+class check_Assignments(generic.ListView):
+    template_name = 'book/book_unassign.html'
+    context_object_name = 'books'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        return Assignment.objects.filter(roll_id=self.kwargs['stud_id']).order_by("-assigned_on")
+
+def check_Assignments(request):
+    roll = request.POST.get('roll_id')
+    assignments = Assignment.objects.filter(roll_id=roll,is_active='Y').select_related('book_id')
+    books = [assignment.book_id for assignment in assignments]
+
+    print(assignments)
+
+    print(books)
+
+    return render(request,"book/book_unassign.html",{'books':books})
 
 
 def unassignBook(request):
@@ -106,6 +135,8 @@ def unassignBookDef(request):
 
         book.quantity = book.quantity+1
         book.save()
+    else:
+        return HttpResponseRedirect(reverse("book:assignment_error", args=(roll,)))
 
     return HttpResponseRedirect(reverse("book:unassign_book"))
 

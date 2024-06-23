@@ -6,7 +6,11 @@
             <label for="roll_id">Roll Id</label>
             <input type="text" name="roll_id" id="roll_id" value="">
             <label for="book_id">Book Id</label>
-            <input type="text" name="book_id" id="book_id" value="">
+            <select name="book_id" id="book_id">
+                {% for book in books %}
+                <option value="{{book.id}}">{{book}}</option>
+                {% endfor %}
+            </select>
     </fieldset>
     <input type="submit" value="Assign">
 </form>
