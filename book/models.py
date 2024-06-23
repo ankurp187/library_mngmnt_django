@@ -15,7 +15,7 @@ class Book(models.Model):
     quantity = models.IntegerField(default=10)
 
     def __str__(self):
-        return self.name+' written by '+self.author
+        return str(self.id) + '. ' + self.name+' written by '+self.author
 
 
 class Assignment(models.Model):

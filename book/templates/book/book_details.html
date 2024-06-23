@@ -3,6 +3,7 @@
 {% if books %}
     <table border="1px solid black" width="800px" align="center">
         <tr>
+            <th>Book Id</th>
             <th>Name</th>
             <th>Author</th>
             <th>Publish_date</th>
@@ -10,7 +11,8 @@
             <th>Quantity</th>
         </tr>
     {% for book in books %}
-        <tr>
+        {% if book.quantity > 0 %} <tr bgcolor="#33cc33"> {% else %} <tr bgcolor="#ff3300"> {% endif %}
+            <td>{{book.id}}</td>
             <td>{{book.name}}</td>
             <td>{{book.author}}</td>
             <td>{{book.publish_date}}</td>
@@ -22,6 +24,7 @@
 {% else %}
     <table border="1px solid black" align="center">
         <tr>
+            <th>Book Id</th>
             <th>Name</th>
             <th>Author</th>
             <th>Publish_date</th>
